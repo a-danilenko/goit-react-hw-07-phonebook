@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import contactsActions from '../../redux/contacts/contacts-action';
 import { connect } from 'react-redux';
+import operations from '../../redux/contacts/contacts-operations';
+import selectors from '../../redux/contacts/contacts-selectors';
 
 class ContactForm extends Component {
   state = {
@@ -13,7 +14,7 @@ class ContactForm extends Component {
   };
 
   static propTypes = {
-    contacts: PropTypes.array,
+    // contacts: PropTypes.arrayOf(PropTypes.object),
     onSubmit: PropTypes.func,
   };
 
@@ -96,11 +97,11 @@ class ContactForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  contacts: state.contacts.contacts,
+  contacts: selectors.getAllContacts(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: (name, number) => dispatch(contactsActions.addContact(name, number)),
+  onSubmit: (name, number) => dispatch(operations.addContact(name, number)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
